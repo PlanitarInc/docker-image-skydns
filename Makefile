@@ -15,6 +15,7 @@ clean:
 	docker rmi -f planitar/skydns 2> /dev/null || true
 
 test: bin/etcd bin/etcdctl
+	docker rm -f test-etcd test-skydns
 	docker run -d --name test-etcd -v `pwd`/bin:/in \
 	  -p ${DOCKER_IP}:14001:14001 planitar/dev-base \
 	  /in/etcd -addr ${DOCKER_IP}:14001 -bind-addr 0.0.0.0
@@ -67,6 +68,8 @@ test: bin/etcd bin/etcdctl
 	  grep -q '^test.planitar\..*.\<SRV\>.*\<10\>.*\<20\>.*\<9002\>.*example.com'
 	dig @${DOCKER_IP} -p1053 SRV test.planitar | \
 	  grep -q '^test.planitar\..*.\<SRV\>.*\<20\>.*\<100\>.*\<9003\>.*01.b.test.planitar'
+	
+	docker rm -f test-etcd test-skydns
 
 bin/skydns:
 	mkdir -p bin
