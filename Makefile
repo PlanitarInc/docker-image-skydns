@@ -15,7 +15,7 @@ clean:
 	docker rmi -f planitar/skydns 2> /dev/null || true
 
 test: bin/etcd bin/etcdctl
-	docker rm -f test-etcd test-skydns
+	docker rm -f test-etcd test-skydns || true
 	docker run -d --name test-etcd -v `pwd`/bin:/in \
 	  -p ${DOCKER_IP}:14001:14001 planitar/dev-base \
 	  /in/etcd -addr ${DOCKER_IP}:14001 -bind-addr 0.0.0.0
