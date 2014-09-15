@@ -78,16 +78,11 @@ bin/skydns:
 	  cp $$GOPATH/bin/skydns /out \
 	'
 
-bin/etcd:
+bin/etcd bin/etcdctl:
 	mkdir -p bin
 	docker run --rm -v `pwd`/bin:/out planitar/dev-go /bin/bash -lc ' \
-	  go get "github.com/coreos/etcd" && \
-	  cp $$GOPATH/bin/etcd /out \
-	'
-
-bin/etcdctl:
-	mkdir -p bin
-	docker run --rm -v `pwd`/bin:/out planitar/dev-go /bin/bash -lc ' \
-	  go get "github.com/coreos/etcdctl" && \
-	  cp $$GOPATH/bin/etcdctl /out \
+	  wget https://github.com/coreos/etcd/releases/download/v0.4.6/etcd-v0.4.6-linux-amd64.tar.gz && \
+	  tar xzvf etcd-v0.4.6-linux-amd64.tar.gz && \
+	  cp etcd-v0.4.6-linux-amd64/etcd /out && \
+	  cp etcd-v0.4.6-linux-amd64/etcdctl /out \
 	'
