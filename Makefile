@@ -1,6 +1,6 @@
 # XXX no versioning of the docker image
 
-DOCKER_IP = 172.17.42.1
+DOCKER_IP=$(shell ifconfig docker0  | sed -n 's/^.*\<inet addr:\([0-9.]\+\).*$$/\1/p')
 
 .PHONY: build push clean test
 
