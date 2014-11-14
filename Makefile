@@ -1,5 +1,9 @@
 IMAGE_NAME=planitar/skydns
 
+ifneq ($(NOCACHE),)
+  NOCACHEFLAG=--no-cache
+endif
+
 DOCKER_IP=$(shell ifconfig docker0  | sed -n 's/^.*\<inet addr:\([0-9.]\+\).*$$/\1/p')
 
 .PHONY: build push clean test
