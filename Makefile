@@ -1,25 +1,25 @@
-# XXX no versioning of the docker image
+IMAGE_NAME=planitar/skydns
 
 DOCKER_IP=$(shell ifconfig docker0  | sed -n 's/^.*\<inet addr:\([0-9.]\+\).*$$/\1/p')
 
 .PHONY: build push clean test
 
 build: bin/skydns
-	docker build -t planitar/skydns .
+	docker build ${NOCACHEFLAG} -t ${IMAGE_NAME} .
 
 push:
-	docker push planitar/skydns
+	docker push ${IMAGE_NAME}
 
 clean:
 	rm -rf ./bin
-	docker rmi -f planitar/skydns 2> /dev/null || true
+	docker rmi -f ${IMAGE_NAME} || true
 
 test: bin/etcd bin/etcdctl
 	docker run -d --name test-etcd -v `pwd`/bin:/in \
 	  -p ${DOCKER_IP}:14001:14001 planitar/dev-base \
 	  /in/etcd -addr ${DOCKER_IP}:14001 -bind-addr 0.0.0.0
 	docker run -d --name test-skydns -p ${DOCKER_IP}:1053:53/udp \
-	  planitar/skydns -addr 0.0.0.0:53 -nameservers 8.8.8.8:53 \
+	  ${IMAGE_NAME} -addr 0.0.0.0:53 -nameservers 8.8.8.8:53 \
 	  -machines http://${DOCKER_IP}:14001 -domain test.planitar. -verbose
 	sleep 1s
 	
