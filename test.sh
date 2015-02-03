@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
 set -ex
 
-echo 1
+export PATH=/in/bin:$PATH
 
 # Set the nameserver
 etcdctl --peers ${DOCKER_IP}:14001 \
