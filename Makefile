@@ -47,8 +47,8 @@ test: bin/etcd bin/etcdctl
 bin/skydns:
 	mkdir -p bin
 	docker run --rm -v `pwd`/bin:/out planitar/dev-go /bin/bash -lc ' \
-	  go get "github.com/skynetservices/skydns" && \
-	  cp $$GOPATH/bin/skydns /out \
+	  pkg="github.com/skynetservices/skydns" && \
+	  gobldcp "$$pkg" skydns /out \
 	'
 
 bin/etcd bin/etcdctl:
