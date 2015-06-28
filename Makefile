@@ -10,7 +10,12 @@ build: bin/skydns
 	docker build ${NOCACHEFLAG} -t ${IMAGE_NAME} .
 
 push:
+ifneq (${IMAGE_TAG},)
+	docker tag -f ${IMAGE_NAME} ${IMAGE_NAME}:${IMAGE_TAG}
+	docker push ${IMAGE_NAME}:${IMAGE_TAG}
+else
 	docker push ${IMAGE_NAME}
+endif
 
 clean:
 	rm -rf ./bin ./logs
