@@ -2,8 +2,6 @@
 
 set -ex
 
-DOCKER_IP=172.17.42.1
-
 cleanup() {
   docker rm -f test-etcd test-skydns
 }
@@ -15,6 +13,8 @@ report() {
 trap report ERR
 trap cleanup EXIT
 
+DOCKER_IP=$(docker run --rm --net host planitar/base ifconfig docker0 | \
+  sed 's/^\s*inet addr:\([0-9][0-9.]*\)\s.*$/\1/p' -n)
 
 docker run -d --name test-etcd \
   -p ${DOCKER_IP}:14001:2379 \
