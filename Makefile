@@ -11,7 +11,7 @@ build: bin/skydns
 
 push:
 ifneq (${IMAGE_TAG},)
-	docker tag -f ${IMAGE_NAME} ${IMAGE_NAME}:${IMAGE_TAG}
+	docker tag ${IMAGE_NAME} ${IMAGE_NAME}:${IMAGE_TAG}
 	docker push ${IMAGE_NAME}:${IMAGE_TAG}
 else
 	docker push ${IMAGE_NAME}
