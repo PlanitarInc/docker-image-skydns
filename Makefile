@@ -22,7 +22,7 @@ clean:
 	docker rmi -f ${IMAGE_NAME} || true
 
 test:
-	./test.sh
+	IMAGE_NAME=${IMAGE_NAME} ./test.sh
 
 bin/skydns:
 	mkdir -p bin

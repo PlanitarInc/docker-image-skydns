@@ -13,8 +13,8 @@ report() {
 trap report ERR
 trap cleanup EXIT
 
-DOCKER_IP=$(docker run --rm --net host planitar/base ifconfig docker0 | \
-  sed 's/^\s*inet addr:\([0-9][0-9.]*\)\s.*$/\1/p' -n)
+DOCKER_IP=$(docker run --rm --net host planitar/base ip -4 a show docker0 | \
+  sed 's@^\s*inet \([0-9][0-9.]*\)/.*$@\1@p' -n)
 
 docker run -d --name test-etcd \
   -p ${DOCKER_IP}:14001:2379 \
